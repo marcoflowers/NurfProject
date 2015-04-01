@@ -26,9 +26,8 @@ teamComp = db.team_comp
 
 def getTimes():
     new_times = []
-
     if times.count()==0:
-        start_time = 1427778000
+        start_time = 1427866500
         #for loop skips over this one for future times
         new_times.append({"_id":start_time,"found":0})
     else:
@@ -51,22 +50,24 @@ def getTimes():
         cur_increment+=(60*increment)
         new_times.append({"_id":cur_increment,"found":0})
         print "Added new time      : "+str(cur_increment)
+    print "New Times :"+str(len(new_times))
     if new_times != []:
         times.insert(new_times)
 
 def getMatchIds():
-    url = ""
+    print "Get MatchIds"
+    url = "https://na.api.pvp.net/api/lol/na/v4.1/game/ids"
     # find the times that have found 0
     for t in times.find({"found":0}):
-        payload = {'api_key': API_KEY, 'region': 'na','time':t['_id'] }
-        #r = requests.get(url, params=payload)
-        r = requests.get('https://www.google.com')
+        payload = {'api_key': API_KEY,'beginDate':t['_id'] }
+        r = requests.get(url, params=payload)
+        print r.status_code
         if(r.status_code == 200):
-            #output = r.json()
+            output = r.json()
 
             #for every id we get insert it into the database
-            #for matchId in output:
-            #    matchIds.insert({"_id":matchId,"found":0})
+            for matchId in output:
+                matchIds.insert({"_id":matchId,"found":0})
 
             #change found to 1
             print "Found MatchIds for : "+str(t["_id"])
@@ -74,10 +75,12 @@ def getMatchIds():
         elif(r.status_code == 429):
             time.sleep(5)
 def getMatches():
+    print "Get Matches"
     url = "https://na.api.pvp.net/api/lol/na/v2.2/match/"
     for t in matchIds.find({"found":0}):
         payload = {'api_key': API_KEY, 'includeTimeline': "true"}
-        r = requests.get(url+"Match-Id-3244323", params = payload)
+        r = requests.get(url+str(t["_id"]), params = payload)
+        print r.status_code
         if(r.status_code == 200):
             output = r.json()
             output["_id"] = t["_id"]
@@ -91,12 +94,23 @@ def getMatches():
             team1["time"] = output["matchDuration"]
             team2["time"] = output["matchDuration"]
 
+            for team in output["teams"]:
+                if(team["teamId"] == 100):
+                    team1["winner"] = team["winner"]
+                elif(team["teamId"] == 200):
+                    team2["winner"] = team["winner"]
+
             #iterate through particpants
             for participant in output["participants"]:
+                win = 0
                 if participant["teamId"] == 100:
                     team1["comp"].append(participant["championId"])
+                    if(team1["winner"]):
+                        win = 1
                 elif participant["teamId"] == 200:
                     team2["comp"].append(participant["championId"])
+                    if(team2["winner"]):
+                        win = 1
 
                 champ_id = participant["championId"]
                 stats = participant["stats"]
@@ -104,15 +118,9 @@ def getMatches():
                 assists = stats["assists"]
                 deaths = stats["deaths"]
 
-                if(champStats.find_and_modify(query = {"_id":champ_id},update={"$inc":{"kills":kills,"assists":assists,"deaths":deaths}}) == None):
+                if(champStats.find_and_modify(query = {"_id":champ_id},update={"$inc":{"kills":kills,"assists":assists,"deaths":deaths,"wins":win,"matches":1}}) == None):
                     # if the champ stats is not ther update it
-                    champStats.insert({"_id":champ_id,"kills":kills,"assists":assists,"deaths":deaths})
-                #print {"_id":champ_id,"kills":kills,"assists":assists,"deaths":deaths}
-            for team in output["teams"]:
-                if(team["teamId"] == 100):
-                    team1["winner"] = team["winner"]
-                elif(team["teamId"] == 200):
-                    team2["winner"] = team["winner"]
+                    champStats.insert({"_id":champ_id,"kills":kills,"assists":assists,"deaths":deaths,"wins":win,"matches":1})
 
             #insert teamp comps and times
             teamComp.insert(team1)
@@ -125,10 +133,10 @@ def getMatches():
             time.sleep(5)
 
 #step 1 update times
-#getTimes()
+getTimes()
 
 #step 2 find match ids at each time
-#getMatchIds()
+getMatchIds()
 
 #step 3 find match data for each id
-#getMatches()
+getMatches()
