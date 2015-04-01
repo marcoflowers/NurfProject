@@ -2,10 +2,17 @@ import requests
 import time
 import pymongo
 from pymongo import MongoClient
+import json
+
+
+SECRETS = json.load(open('../secrets.json', 'r'))
+if(SECRETS["config"] == "dev"):
+    client = MongoClient(SECRETS["dev"]["server"])
+else:
+    client = MongoClient(SECRETS["live"]["server"])
 
 #setup mongo
-client = MongoClient('localhost', 27017)
-db = client.test_database
+db = client.nurf
 times = db.times
 matchIds = db.match_ids
 matches = db.matches
