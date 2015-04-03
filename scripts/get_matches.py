@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 import requests
 import time
 import pymongo
@@ -5,7 +6,7 @@ from pymongo import MongoClient
 import json
 
 
-SECRETS = json.load(open('../secrets.json', 'r'))
+SECRETS = json.load(open('/opt/NurfProject/secrets.json', 'r'))
 if(SECRETS["config"] == "dev"):
     client = MongoClient(SECRETS["dev"]["server"])
     API_KEY = SECRETS["dev"]["API_KEY"]
@@ -139,4 +140,4 @@ getTimes()
 getMatchIds()
 
 #step 3 find match data for each id
-getMatches()
+#getMatches()
