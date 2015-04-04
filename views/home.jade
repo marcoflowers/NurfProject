@@ -1,0 +1,27 @@
+extends ./base.jade
+block title
+  title URFWin
+
+block body
+  div.container()
+    div.row
+      h1(style="text-align:center") URF
+        small win
+    div.row#show-selection(style="display:table;")
+        img.splash#splash1(src="/img/empty_white.png")
+        img#vs(src="/img/versus.png")
+        img.splash#splash2(src="/img/empty_white.png")
+    div.row(style="text-align:center;")
+      small Filter Champs &nbsp
+      input.champInput(type="text" style="display:inline-block" id="champ1" placeholder="Query")
+      button(style="display:inline-block") Who will win?
+      button(style="display:inline-block" onclick="reset()") Reset
+      div.row#champPool(style="text-align:center;padding-top: 15px;")
+
+
+//  div.teemo(style="position:absolute;left:25%; top: 15%;width: 120px;")
+    img(width=48 height=48 src="http://ddragon.leagueoflegends.com/cdn/5.2.2/img/champion/Teemo.png" style="display:inline")
+    p(style="display:inline;")= shrooms + " Shrooms/Game"
+
+block scripts
+  script(src="/js/home.js")
