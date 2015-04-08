@@ -3,3 +3,4 @@ secrets.json
 node_modules/
 env/
 .*.sw*
+typings/

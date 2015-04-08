@@ -30,9 +30,21 @@
     display: inline-block;
 }
 
+.splash {
+    padding-left: 50px;
+    padding-right: 50px;
+    display: inline-block;
+}
+
 #vs {
     height: 280px;
     margin: 0;
     padding: 0;
     display: inline;
+}
+
+#filter {
+    display: block;
+    padding: 15px;
+    padding-top: 25px;
 }

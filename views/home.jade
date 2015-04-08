@@ -8,14 +8,17 @@ block body
       h1(style="text-align:center") URF
         small win
     div.row#show-selection(style="display:table;")
+      div.splash
         img.splash#splash1(src="/img/empty_white.png")
-        img#vs(src="/img/versus.png")
+      img#vs(src="/img/versus.png")
+      div.splash
         img.splash#splash2(src="/img/empty_white.png")
     div.row(style="text-align:center;")
-      small Filter Champs &nbsp
-      input.champInput(type="text" style="display:inline-block" id="champ1" placeholder="Query")
-      button(style="display:inline-block") Who will win?
-      button(style="display:inline-block" onclick="reset()") Reset
+      button.btn.btn-default(style="display:inline-block") Who will win?
+      div#filter
+        small Filter Champs &nbsp
+        input.champInput(type="text" style="display:inline-block" id="champ1" placeholder="Query")
+        button.btn.btn-default(style="display:inline-block" onclick="reset()") Reset
       div.row#champPool(style="text-align:center;padding-top: 15px;")
 
 
