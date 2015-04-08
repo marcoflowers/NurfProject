@@ -15,5 +15,8 @@
     "mongoskin": "*",
     "morgan": "~1.5.1",
     "serve-favicon": "~2.2.0"
+  },
+  "devDependencies": {
+    "uglify": "^0.1.3"
   }
 }
