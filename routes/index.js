@@ -1,9 +1,17 @@
 var express = require('express');
-var router = express.Router();
 
-/* GET home page. */
-router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Express' });
-});
+module.exports = function(app) {
 
-module.exports = router;
+    /* GET home page. */
+    app.get('/', function(req, res, next) {
+        res.render('home', {shrooms: 500});
+    });
+    /* GET matchup data. */
+    app.post('/', function(req, res, next) {
+        console.log(req.body);
+        var data = req.body;
+
+        res.json();
+    });
+
+}

@@ -1,8 +1,38 @@
-body {
-  padding: 50px;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+.champIcon {
+    width: 50px;
+    height: 50px;
+    transition: all .25s ease-in-out;
+    margin: auto;
+    display: inline-block;
+    cursor: pointer;
 }
 
-a {
-  color: #00B7FF;
+.champIcon:hover {
+    z-index: 100;
+    transform: scale(0.7,0.7);
+    transform: scale(1.2,1.2);
+    box-shadow: 0 5px 10px 0 rgba(0,0,0,.2);
+}
+
+.selected {
+    border: 5px solid red;
+}
+
+#show-selection {
+    padding-bottom: 5px;
+    margin:auto!important;
+
+}
+#splash1, #splash2 {
+    border: #333 dashed;
+    width: 154px;
+    height: 280px;
+    display: inline-block;
+}
+
+#vs {
+    height: 280px;
+    margin: 0;
+    padding: 0;
+    display: inline;
 }
