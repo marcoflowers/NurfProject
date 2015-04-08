@@ -18,7 +18,11 @@ else:
 db = client.nurf
 times = db.times
 matchIds = db.match_ids
-matches = db.matches
+
+onev = db.onev
+shrooms = db.shrooms
+
+
 champStats = db.champ_stats
 teamComp = db.team_comp
 
@@ -27,7 +31,7 @@ teamComp = db.team_comp
 def getTimes():
     new_times = []
     if times.count()==0:
-        start_time = 1427866500
+        start_time = 1428483600
         #for loop skips over this one for future times
         new_times.append({"_id":start_time,"found":0})
     else:
@@ -85,8 +89,6 @@ def getMatches():
             output = r.json()
             output["_id"] = t["_id"]
 
-            #insert full match data
-            matches.insert(output)
 
             #get team comps composed of championIds
             team1 = {"comp":[]}
@@ -100,8 +102,10 @@ def getMatches():
                 elif(team["teamId"] == 200):
                     team2["winner"] = team["winner"]
 
+            participant_to_champ = {}
             #iterate through particpants
             for participant in output["participants"]:
+                participant_to_champ[participant["participantId"]] = participant["championId"]
                 win = 0
                 if participant["teamId"] == 100:
                     team1["comp"].append(participant["championId"])
@@ -125,7 +129,27 @@ def getMatches():
             #insert teamp comps and times
             teamComp.insert(team1)
             teamComp.insert(team2)
+            print participant_to_champ
+            mush = 0
+            for frame in output["timeline"]["frames"]:
+                if "events" in frame.keys():
+                    for event in frame["events"]:
+                        if event["eventType"] == "CHAMPION_KILL" and "assistingParticipants" not in event.keys():
+                            if event["killerId"] != 0:
+                                killer_id = str(participant_to_champ[event["killerId"]])
+                                victim_id = str(participant_to_champ[event["victimId"]])
+                                id_array = [killer_id,victim_id]
+                                id_array.sort(key=int)
+                                if(onev.find_and_modify(query = {"_id":"-".join(id_array)},update={"$inc":{killer_id:1}}) == None):
+                                    # if the champ stats is not ther update it
+                                    onev.insert({"_id":"-".join(id_array),killer_id:1,victim_id:0})
 
+                        elif event["eventType"] == "WARD_PLACED":
+                            if event["wardType"] == "TEEMO_MUSHROOM":
+                                mush += 1
+
+            if 17 in participant_to_champ.values():
+                shrooms.insert({"_id":t["_id"],"shrooms":mush})
 
             print "Found Match for : "+str(t["_id"])
             matchIds.update({'_id': t["_id"]},{'$inc': {'found': 1}})
@@ -133,10 +157,10 @@ def getMatches():
             time.sleep(5)
 
 #step 1 update times
-getTimes()
+#getTimes()
 
 #step 2 find match ids at each time
-getMatchIds()
+#getMatchIds()
 
 #step 3 find match data for each id
 getMatches()
