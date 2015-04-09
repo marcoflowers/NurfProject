@@ -1,25 +1,10 @@
-/// <reference path="../typings/jquery/jquery.d.ts"/>
+/// <reference path="./typings/jquery/jquery.d.ts"/>
 'use strict'
 var splash_url = "http://ddragon.leagueoflegends.com/cdn/img/champion/loading/{0}_0.jpg"
 var champions=['Aatrox', 'Ahri', 'Akali', 'Alistar', 'Amumu', 'Anivia', 'Annie', 'Ashe', 'Azir', 'Bard', 'Blitzcrank', 'Brand', 'Braum', 'Caitlyn', 'Cassiopeia', 'Chogath', 'Corki', 'Darius', 'Diana', 'DrMundo', 'Draven', 'Elise', 'Evelynn', 'Ezreal', 'FiddleSticks', 'Fiora', 'Fizz', 'Galio', 'Gangplank', 'Garen', 'Gnar', 'Gragas', 'Graves', 'Hecarim', 'Heimerdinger', 'Irelia', 'Janna', 'JarvanIV', 'Jax', 'Jayce', 'Jinx', 'Kalista', 'Karma', 'Karthus', 'Kassadin', 'Katarina', 'Kayle', 'Kennen', 'Khazix', 'KogMaw', 'Leblanc', 'LeeSin', 'Leona', 'Lissandra', 'Lucian', 'Lulu', 'Lux', 'Malphite', 'Malzahar', 'Maokai', 'MasterYi', 'MissFortune', 'Mordekaiser', 'Morgana', 'Nami', 'Nasus', 'Nautilus', 'Nidalee', 'Nocturne', 'Nunu', 'Olaf', 'Orianna', 'Pantheon', 'Poppy', 'Quinn', 'Rammus', 'RekSai', 'Renekton', 'Rengar', 'Riven', 'Rumble', 'Ryze', 'Sejuani', 'Shaco', 'Shen', 'Shyvana', 'Singed', 'Sion', 'Sivir', 'Skarner', 'Sona', 'Soraka', 'Swain', 'Syndra', 'Talon', 'Taric', 'Teemo', 'Thresh', 'Tristana', 'Trundle', 'Tryndamere', 'TwistedFate', 'Twitch', 'Udyr', 'Urgot', 'Varus', 'Vayne', 'Veigar', 'Velkoz', 'Vi', 'Viktor', 'Vladimir', 'Volibear', 'Warwick', 'Wukong', 'Xerath', 'XinZhao', 'Yasuo', 'Yorick', 'Zac', 'Zed', 'Ziggs', 'Zilean', 'Zyra'];
 
 
-class Champion {
-    name: string;
-    riotName: string;
-    constructor(public champName, public riot) {
-        this.name = name;
-        this.riotName = riot;
-    }
-}
 
-test
-class ChampList {
-    entries:Champion[];
-    constructor(champNames:string[]) {
-
-    }
-}
 interface String {
     format(args:string): string;
 }
@@ -33,10 +18,12 @@ String.prototype.format = function() {
     });
 };
 
+
+
 var selected = [];
 $(document).ready(function () {
     // Gets images into browser cache
-    preloadAsync(champions);
+    preloadImages(champions);
 
     champions = champions.sort();
     // Load champion tiles
@@ -48,8 +35,12 @@ $(document).ready(function () {
             $(this).removeClass('selected');
             selected.splice(selected.indexOf($(this).attr('id')));
             setSelection();
-        } else if($(".selected").length < 2) {
+        } else {
             $(this).attr('class', 'champIcon selected')
+
+            if(selected.length == 2) {
+                $('#' + selected.shift()).removeClass('selected');
+            }
             selected.push($(this).attr('id'));
             setSelection();
         }
@@ -92,11 +83,9 @@ function setSelection() {
     $.each(selected, function (index) {
         $('#splash' + (index + 1)).attr('src', splash_url.format(this!='Wukong' ? this : 'MonkeyKing'));
     });
-    if($('.selected').length <= 1) {
+    if($('.selected').length < 2) {
         $('#splash2').attr('src', '/img/empty_white.png');
-    }
-    if($('.selected').length == 0) {
-        console.log('clearing');
+    } else if($('.selected').length == 0) {
         $('#splash1').attr('src', '/img/empty_white.png');
     }
 }
@@ -105,6 +94,7 @@ function setSelection() {
 function reset() {
     $('.selected').removeClass('selected');
     $('.splash').attr('src', "/img/empty_white.png");
+    selected = [];
 }
 
 
@@ -113,26 +103,24 @@ function showMatchup(data) {
 }
 
 
-// First, checks if it isn't implemented yet.
-
-function preloadAsync(array) {
+function preloadImages(array) {
     setTimeout(function () {
-        preloadImages(array);
+
+        var list = [];
+        for (var i = 0; i < array.length; i++) {
+            var img = new Image();
+            img.onload = function() {
+                var index = list.indexOf(this);
+                if (index !== -1) {
+                    // remove image from the array once it's loaded
+                    // for memory consumption reasons
+                    list.splice(index, 1);
+                }
+            }
+            list.push(img);
+            img.src = splash_url.format(array[i]!='Wukong' ? array[i] : 'MonkeyKing');
+        }
     }, 0);
 }
-function preloadImages(array) {
-    var list = [];
-    for (var i = 0; i < array.length; i++) {
-        var img = new Image();
-        img.onload = function() {
-            var index = list.indexOf(this);
-            if (index !== -1) {
-                // remove image from the array once it's loaded
-                // for memory consumption reasons
-                list.splice(index, 1);
-            }
-        }
-        list.push(img);
-        img.src = splash_url.format(array[i]!='Wukong' ? array[i] : 'MonkeyKing');
-    }
-}
+
+

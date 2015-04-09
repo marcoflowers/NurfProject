@@ -25,9 +25,10 @@
 }
 #splash1, #splash2 {
     border: #333 dashed;
+    display: inline-block;
     width: 154px;
     height: 280px;
-    display: inline-block;
+    padding: 0;
 }
 
 .splash {
