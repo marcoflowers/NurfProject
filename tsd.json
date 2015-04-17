@@ -5,8 +5,11 @@
   "path": "./ts/typings",
   "bundle": "typings/tsd.d.ts",
   "installed": {
-    "backbone/backbone.d.ts": {
-      "commit": "8f16b0fd1acd81a555b74f912da849dccc7c9a42"
+    "jquery/jquery.d.ts": {
+      "commit": "52fa2b9ce36f2c5843204e9bfbaada7cded9b47a"
+    },
+    "jqueryui/jqueryui.d.ts": {
+      "commit": "52fa2b9ce36f2c5843204e9bfbaada7cded9b47a"
     }
   }
 }
