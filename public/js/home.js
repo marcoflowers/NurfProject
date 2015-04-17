@@ -116,12 +116,37 @@ function showMatchup(data) {
         $('.grey').show()
             .css('width', $(document).width())
             .css('height', $(document).height());
-        $('<h1>Winnurf!</h1>').appendTo('.grey')
+        $('<h1>Winner urf!</h1>').appendTo('.grey')
             .css('color', 'white')
             .css('margin-top', $('nav.navbar').height())
             .show('slow');
-        $('<img src="' + splash_url.format(winner) + '">').appendTo($('.grey'))
+        $('<div class="overallrow row"></div>').appendTo('.grey')
+        $('<div class="champ1_stats col-md-4"></div>').appendTo('.overallrow')
+            .css('background-color','white')
+
+        $("<h1>"+champs[0]+"</h1>").appendTo(".champ1_stats")
+        $("<h4>Kills = </h4>").appendTo(".champ1_stats")
+        $("<h4>Deaths = </h4>").appendTo(".champ1_stats")
+        $("<h4>Wins = </h4>").appendTo(".champ1_stats")
+        $("<h4>Total Games = </h4>").appendTo(".champ1_stats")
+        $("<h4>1v1 Wins = "+data[champs[0]]+"</h4>").appendTo(".champ1_stats")
+        $("<h3>1v1 % = "+Math.round(data[champs[0]]/(data[champs[1]]+data[champs[0]])*100)+"%</h3>").appendTo(".champ1_stats")
+
+        $('<div class="image_col col-md-4"><img src="' + splash_url.format(winner) + '"></div>').appendTo($('.overallrow'))
             .fadeIn(400);
+
+
+        $('<div class="champ2_stats col-md-4"></div>').appendTo($('.overallrow'))
+            .css('background-color','white')
+        $("<h1>"+champs[1]+"</h1>").appendTo(".champ2_stats")
+        $("<h4>Kills = </h4>").appendTo(".champ2_stats")
+        $("<h4>Deaths = </h4>").appendTo(".champ2_stats")
+        $("<h4>Wins = </h4>").appendTo(".champ2_stats")
+        $("<h4>Total Games = </h4>").appendTo(".champ2_stats")
+        $("<h4>1v1 Wins = "+data[champs[1]]+"</h4>").appendTo(".champ2_stats")
+        $("<h3>1v1 % = "+Math.round(data[champs[1]]/(data[champs[1]]+data[champs[0]])*100)+"%</h3>").appendTo(".champ2_stats")
+
+
         $('.grey').click(function (e) {
             $(this).fadeOut(400);
             $(this).empty();
