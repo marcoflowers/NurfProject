@@ -4,13 +4,14 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
-var db = require('mongoose');
-db.connect('mongodb://127.0.0.1/nurf');
-
-
-var routes = require('./routes/index');
 
 var app = express();
+var secrets = require('./secrets.json');
+secrets = secrets[secrets.config];
+
+var db = require('mongoskin').db(secrets.server);
+
+
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -29,11 +30,11 @@ require('./routes/index')(app, db);
 
 
 // catch 404 and forward to error handler
-app.use(function(req, res, next) {
+/*app.use(function(req, res, next) {
   var err = new Error('Not Found');
   err.status = 404;
   next(err);
-});
+});*/
 
 // error handlers
 
@@ -51,13 +52,21 @@ if (app.get('env') === 'development') {
 
 // production error handler
 // no stacktraces leaked to user
-app.use(function(err, req, res, next) {
+/*app.use(function(err, req, res, next) {
   res.status(err.status || 500);
   res.render('error', {
     message: err.message,
     error: {}
   });
-});
+});*/
 
+app.use(function(error, req, res, next) {
+     console.error(error);
+     if (ISLOCALHOST()) {
+       res.json(error, 500);
+     } else {
+       res.send('500: Internal Server Error', 500);
+     }
+  });
 
 module.exports = app;

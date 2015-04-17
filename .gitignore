@@ -6,3 +6,4 @@ env/
 typings/
 Vagrantfile
 .vagrant/
+secrets.json

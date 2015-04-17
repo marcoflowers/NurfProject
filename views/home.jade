@@ -5,7 +5,7 @@ block css
   link(rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.css")
 
 block body
-  div.container()
+  div.container
     div.row
       h1(style="text-align:center") URF
         small win
@@ -17,7 +17,7 @@ block body
         img.splashIcon#splash2(src="/img/empty_white.png")
     div.row(style="text-align:center;")
       button.btn.btn-default#submit(style="display:inline-block") Who will win?
-      small#error(style="display:block;color:red;")&nbsp
+      small#error(style="display:block;color:red;") &nbsp
       div#filter
         small Filter Champs &nbsp
         input.champInput(type="text" style="display:inline-block" placeholder="Query")
@@ -27,7 +27,7 @@ block body
 
   //div.teemo(style="position:absolute;left:25%; top: 15%;width: 120px;")
     img(width=48 height=48 src="http://ddragon.leagueoflegends.com/cdn/5.2.2/img/champion/Teemo.png" style="display:inline")
-    p(style="display:inline;")= 5 + " Shrooms/Game"
+    p(style="display:inline;")= shrooms + " Shrooms/Game"
 
 block scripts
   script(src="/js/home.js")

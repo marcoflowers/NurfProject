@@ -53,3 +53,14 @@
     padding: 15px;
     padding-top: 25px;
 }
+
+
+.grey {
+    margin:0;
+    background: rgba(51, 51, 51, .75);
+    position: fixed;
+    z-index: 100;
+    overflow: hidden;
+    display: none;
+    text-align: center;
+}

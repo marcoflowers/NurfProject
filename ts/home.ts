@@ -23,9 +23,8 @@ $(document).ready(function () {
     // Gets images into browser cache
     preloadImages(champions);
 
-
-
     champions = champions.sort();
+
     // Load champion tiles
     for(var champion in champions) {
         $('#champPool').append('<div class="champIcon" id="' + champions[champion] + '" style="background:url(\'/img/champion/' + champions[champion] + '.png\');background-size:contain;">');
@@ -43,7 +42,6 @@ $(document).ready(function () {
         $(".splashIcon").each(function(index:number) {
             selected.push($(this).attr('value'));
         });
-        console.log(selected);
         if(selected.indexOf(name) != -1) {
             return;
         } else {
@@ -127,7 +125,28 @@ function reset() {
 
 
 function showMatchup(data) {
-    console.log(data);
+    if(data.err === "No data found") {
+        $('#error').text("Sorry, no data was found for this matchup")
+    } else {
+        var champs = [];
+        $('.splashIcon').each(function(index) {
+            champs.push($(this).attr('value'));
+        });
+        var winner = data[champs[0]] > data[champs[1]] ? champs[0] : champs[1];
+        $('.grey').show()
+            .css('width', $(document).width())
+            .css('height', $(document).height());
+        $('<h1>Winnurf!</h1>').appendTo('.grey')
+            .css('color', 'white')
+            .css('margin-top', $('nav.navbar').height())
+            .show('slow');
+        $('<img src="' + splash_url.format(winner) + '">').appendTo($('.grey'))
+            .fadeIn(400);
+        $('.grey').click(function (e:Event) {
+            $(this).fadeOut(400);
+            $(this).empty();
+        });
+    }
 }
 
 
