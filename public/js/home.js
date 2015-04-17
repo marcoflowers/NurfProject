@@ -1,4 +1,5 @@
 /// <reference path="./typings/jquery/jquery.d.ts"/>
+/// <reference path="./typings/jqueryui/jqueryui.d.ts"/>
 'use strict';
 var splash_url = "http://ddragon.leagueoflegends.com/cdn/img/champion/loading/{0}_0.jpg";
 var champions = ['Aatrox', 'Ahri', 'Akali', 'Alistar', 'Amumu', 'Anivia', 'Annie', 'Ashe', 'Azir', 'Bard', 'Blitzcrank', 'Brand', 'Braum', 'Caitlyn', 'Cassiopeia', 'Chogath', 'Corki', 'Darius', 'Diana', 'DrMundo', 'Draven', 'Elise', 'Evelynn', 'Ezreal', 'FiddleSticks', 'Fiora', 'Fizz', 'Galio', 'Gangplank', 'Garen', 'Gnar', 'Gragas', 'Graves', 'Hecarim', 'Heimerdinger', 'Irelia', 'Janna', 'JarvanIV', 'Jax', 'Jayce', 'Jinx', 'Kalista', 'Karma', 'Karthus', 'Kassadin', 'Katarina', 'Kayle', 'Kennen', 'Khazix', 'KogMaw', 'Leblanc', 'LeeSin', 'Leona', 'Lissandra', 'Lucian', 'Lulu', 'Lux', 'Malphite', 'Malzahar', 'Maokai', 'MasterYi', 'MissFortune', 'Mordekaiser', 'Morgana', 'Nami', 'Nasus', 'Nautilus', 'Nidalee', 'Nocturne', 'Nunu', 'Olaf', 'Orianna', 'Pantheon', 'Poppy', 'Quinn', 'Rammus', 'RekSai', 'Renekton', 'Rengar', 'Riven', 'Rumble', 'Ryze', 'Sejuani', 'Shaco', 'Shen', 'Shyvana', 'Singed', 'Sion', 'Sivir', 'Skarner', 'Sona', 'Soraka', 'Swain', 'Syndra', 'Talon', 'Taric', 'Teemo', 'Thresh', 'Tristana', 'Trundle', 'Tryndamere', 'TwistedFate', 'Twitch', 'Udyr', 'Urgot', 'Varus', 'Vayne', 'Veigar', 'Velkoz', 'Vi', 'Viktor', 'Vladimir', 'Volibear', 'Warwick', 'Wukong', 'Xerath', 'XinZhao', 'Yasuo', 'Yorick', 'Zac', 'Zed', 'Ziggs', 'Zilean', 'Zyra'];
@@ -10,7 +11,6 @@ String.prototype.format = function () {
             : match;
     });
 };
-var selected = [];
 $(document).ready(function () {
     // Gets images into browser cache
     preloadImages(champions);
@@ -19,40 +19,73 @@ $(document).ready(function () {
     for (var champion in champions) {
         $('#champPool').append('<div class="champIcon" id="' + champions[champion] + '" style="background:url(\'/img/champion/' + champions[champion] + '.png\');background-size:contain;">');
     }
+    $('.splashIcon').click(function (e) {
+        $('.replace').removeClass('replace');
+        $(this).addClass('replace');
+    });
     $('.champIcon').click(function (e) {
-        if ($(this).hasClass('selected')) {
-            $(this).removeClass('selected');
-            selected.splice(selected.indexOf($(this).attr('id')));
-            setSelection();
+        var name = $(this).attr('id');
+        var selected = [];
+        $(".splashIcon").each(function (index) {
+            selected.push($(this).attr('value'));
+        });
+        console.log(selected);
+        if (selected.indexOf(name) != -1) {
+            return;
         }
         else {
-            $(this).attr('class', 'champIcon selected');
-            if (selected.length == 2) {
-                $('#' + selected.shift()).removeClass('selected');
+            selected.splice(selected.indexOf($('.replace').attr('value')), 1);
+            selected.push(name);
+        }
+        $('.splashIcon').each(function (index) {
+            console.log($(this).attr('value') + " : " + name);
+            if ($(this).attr('value') == name) {
+                return;
             }
-            selected.push($(this).attr('id'));
-            setSelection();
+        });
+        $(this).attr('data-splash', $('.replace').attr('id'));
+        $('.replace').attr('src', splash_url.format($(this).attr('id') != 'Wukong' ? $(this).attr('id') : 'MonkeyKing'));
+        $('.replace').attr('value', $(this).attr('id') != 'Wukong' ? $(this).attr('id') : 'MonkeyKing');
+    });
+    // Listener to submit
+    $("#submit").click(function (event) {
+        //event.preventDefault();
+        var data = {
+            champ1: $('#splash1').attr('value'),
+            champ2: $('#splash2').attr('value')
+        };
+        if (data.champ1 != undefined && data.champ2 != undefined) {
+            $.ajax({
+                type: "POST",
+                url: "/",
+                data: data,
+                success: showMatchup
+            });
+        }
+        else {
+            $('#error').text('Please pick both champions');
         }
     });
-    // Setup form submit listener to query website
-    $("#main").submit(function (event) {
-        event.preventDefault();
-        var data = {
-            champ1: $('#champ1').val(),
-            champ2: $('#champ2').val()
-        };
-        $.ajax({
-            type: "POST",
-            url: "/",
-            data: data,
-            success: showMatchup
-        });
-    });
-    $('.champInput').keyup(function (e) {
+    $('.champInput').keypress(function (e) {
         var element = $(e.target);
-        filter(element.val());
+        if ((e.keyCode || e.which) == 13) {
+            $('.champIcon').filter(':visible').first().trigger('click');
+        }
+        //filter(element.val());
+    });
+    $('.champInput').autocomplete({
+        autofocus: true,
+        source: champions,
+        autoFocus: true,
+        select: choose
     });
 });
+function choose(e, ui) {
+    $('.replace').attr('src', splash_url.format(ui.item.value != 'Wukong' ? ui.item.value : 'MonkeyKing'));
+    $('.replace').attr('value', ui.item.value != 'Wukong' ? ui.item.value : 'MonkeyKing');
+    $(this).val('');
+    return false;
+}
 function filter(name) {
     var icon;
     $('.champIcon').each(function () {
@@ -65,21 +98,11 @@ function filter(name) {
         }
     });
 }
-function setSelection() {
-    $.each(selected, function (index) {
-        $('#splash' + (index + 1)).attr('src', splash_url.format(this != 'Wukong' ? this : 'MonkeyKing'));
-    });
-    if ($('.selected').length < 2) {
-        $('#splash2').attr('src', '/img/empty_white.png');
-    }
-    else if ($('.selected').length == 0) {
-        $('#splash1').attr('src', '/img/empty_white.png');
-    }
-}
 function reset() {
     $('.selected').removeClass('selected');
     $('.splash').attr('src', "/img/empty_white.png");
-    selected = [];
+    $('.replace').removeClass('replace');
+    $('#splash1').addClass('replace');
 }
 function showMatchup(data) {
     console.log(data);

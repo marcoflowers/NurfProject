@@ -23,12 +23,16 @@
     margin:auto!important;
 
 }
-#splash1, #splash2 {
+.splashIcon {
     border: #333 dashed;
     display: inline-block;
     width: 154px;
     height: 280px;
     padding: 0;
+}
+
+.replace {
+    border: solid red;
 }
 
 .splash {

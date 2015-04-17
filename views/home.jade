@@ -1,6 +1,8 @@
 extends ./base.jade
 block title
   title URFWin
+block css
+  link(rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.css")
 
 block body
   div.container()
@@ -9,22 +11,24 @@ block body
         small win
     div.row#show-selection(style="display:table;")
       div.splash
-        img.splash#splash1(src="/img/empty_white.png")
+        img.splashIcon.replace#splash1(src="/img/empty_white.png")
       img#vs(src="/img/versus.png")
       div.splash
-        img.splash#splash2(src="/img/empty_white.png")
+        img.splashIcon#splash2(src="/img/empty_white.png")
     div.row(style="text-align:center;")
-      button.btn.btn-default(style="display:inline-block") Who will win?
+      button.btn.btn-default#submit(style="display:inline-block") Who will win?
+      small#error(style="display:block;color:red;")&nbsp
       div#filter
         small Filter Champs &nbsp
-        input.champInput(type="text" style="display:inline-block" id="champ1" placeholder="Query")
+        input.champInput(type="text" style="display:inline-block" placeholder="Query")
         button.btn.btn-default(style="display:inline-block" onclick="reset()") Reset
       div.row#champPool(style="text-align:center;padding-top: 15px;")
 
 
-//  div.teemo(style="position:absolute;left:25%; top: 15%;width: 120px;")
+  //div.teemo(style="position:absolute;left:25%; top: 15%;width: 120px;")
     img(width=48 height=48 src="http://ddragon.leagueoflegends.com/cdn/5.2.2/img/champion/Teemo.png" style="display:inline")
-    p(style="display:inline;")= shrooms + " Shrooms/Game"
+    p(style="display:inline;")= 5 + " Shrooms/Game"
 
 block scripts
   script(src="/js/home.js")
+  script(src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js")
