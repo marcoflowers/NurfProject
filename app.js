@@ -4,6 +4,7 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var mongo = require('mongoskin');
 
 var app = express();
 var secrets = require('./secrets.json');
@@ -59,14 +60,5 @@ if (app.get('env') === 'development') {
     error: {}
   });
 });*/
-
-app.use(function(error, req, res, next) {
-     console.error(error);
-     if (ISLOCALHOST()) {
-       res.json(error, 500);
-     } else {
-       res.send('500: Internal Server Error', 500);
-     }
-  });
 
 module.exports = app;
