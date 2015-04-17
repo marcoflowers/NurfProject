@@ -4,8 +4,22 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
-var db = require('mongoose');
-db.connect('mongodb://127.0.0.1/nurf');
+var mongo = require('mongoskin');
+var SECRETS = require('./secrets');
+
+if(SECRETS["config"] == "dev")
+{
+    client = MongoClient(SECRETS["dev"]["server"])
+    API_KEY = SECRETS["dev"]["API_KEY"]
+}
+else
+{
+    server = SECRETS["live"]["server"]
+    username = SECRETS["live"]["username"]
+    password = SECRETS["live"]["password"]
+    API_KEY = SECRETS["live"]["API_KEY"]
+}
+var db = mongo.db(server);
 
 
 var routes = require('./routes/index');
