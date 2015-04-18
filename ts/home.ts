@@ -27,7 +27,7 @@ $(document).ready(function () {
 
     // Load champion tiles
     for(var champion in champions) {
-        $('#champPool').append('<div class="champIcon" id="' + champions[champion] + '" style="background:url(\'/img/champion/' + champions[champion] + '.png\');background-size:contain;">');
+        $('#champPool').append('<div class="champIcon" id="' + champions[champion] + '" style="background:url(\'http://ddragon.leagueoflegends.com/cdn/5.6.2/img/champion/' + (champions[champion] !='Wukong' ? champions[champion] : 'MonkeyKing') + '.png\');background-size:contain;">');
     }
 
     $('.splashIcon').click(function(e:Event) {
@@ -85,7 +85,7 @@ $(document).ready(function () {
         }
         //filter(element.val());
     });
-    
+
     $('.champInput').autocomplete({
         autofocus: true,
         source: champions,
@@ -129,10 +129,10 @@ function showMatchup(data) {
         $('#error').text("Sorry, no data was found for this matchup")
     } else {
         var champs = [];
-        $('.splashIcon').each(function(index) {
+        $('.splashIcon').each(function (index) {
             champs.push($(this).attr('value'));
         });
-        var winner = data[champs[0]] > data[champs[1]] ? champs[0] : champs[1];
+        var winner = data[champs[0]]["head"] > data[champs[1]]["head"] ? champs[0] : champs[1];
         $('.grey').show()
             .css('width', $(document).width())
             .css('height', $(document).height());
@@ -140,9 +140,60 @@ function showMatchup(data) {
             .css('color', 'white')
             .css('margin-top', $('nav.navbar').height())
             .show('slow');
-        $('<img src="' + splash_url.format(winner) + '">').appendTo($('.grey'))
+        $('<div class="overallrow row"></div>').appendTo('.grey')
+        $('<div class="leftside col-md-4"></div>').appendTo('.overallrow')
+        $('<div class="champ1_stats text-left"></div>').appendTo('.leftside')
+            .css('color','white')
+            .width("70%")
+            .css("margin","auto")
+            .css("display","table")
+
+        $("<h1 class='text-center'>"+champs[0]+"</h1>").appendTo(".champ1_stats")
+        $('<div class="champIconGrey text-center"  style="background:url(\'http://ddragon.leagueoflegends.com/cdn/5.6.2/img/champion/' + (champs[0] !='Wukong' ? champs[0] : 'MonkeyKing') + '.png\');background-size:contain;">').appendTo(".champ1_stats")
+            .css("margin","auto")
+            .css("display","table")
+        $("<h4 class='text-center'>Solo Kills vs "+champs[1]+"</h4>").appendTo(".champ1_stats")
+        $("<h4 class='text-center'>"+data[champs[0]]["head"]+"</h4>").appendTo(".champ1_stats")
+            .css("color","green")
+        /*
+        $("<h4>Kills = "+data[champs[0]]["kills"]+"</h4>").appendTo(".champ1_stats")
+        $("<h4>Deaths = "+data[champs[0]]["deaths"]+"</h4>").appendTo(".champ1_stats")
+        $("<h4>Wins = "+data[champs[0]]["wins"]+"</h4>").appendTo(".champ1_stats")
+        $("<h4>Total Games = "+data[champs[0]]["matches"]+"</h4>").appendTo(".champ1_stats")
+        $("<h4>Win % = "+Math.round(data[champs[0]]["wins"]/data[champs[0]]["matches"]*100)+"%</h4>").appendTo(".champ1_stats")
+        $("<h4>1v1 Wins vs "+champs[1]+" = "+data[champs[0]]["head"]+"</h4>").appendTo(".champ1_stats")
+        $("<h4>1v1 % vs "+champs[1]+" = "+Math.round(data[champs[0]]["head"]/(data[champs[1]]["head"]+data[champs[0]]["head"])*100)+"%</h4>").appendTo(".champ1_stats")
+        */
+        $('<div class="image_col col-md-4"><img src="' + splash_url.format(winner) + '"></div>').appendTo($('.overallrow'))
             .fadeIn(400);
-        $('.grey').click(function (e:Event) {
+
+
+        $('<div class="rightside col-md-4"></div>').appendTo('.overallrow')
+        $('<div class="champ2_stats text-left"></div>').appendTo('.rightside')
+            .css('color','white')
+            .width("70%")
+            .css("margin","auto")
+            .css("display","table")
+
+        $("<h1 class='text-center'>"+champs[1]+"</h1>").appendTo(".champ2_stats")
+        $('<div class="champIconGrey text-center"  style="background:url(\'http://ddragon.leagueoflegends.com/cdn/5.6.2/img/champion/' + (champs[1] !='Wukong' ? champs[1] : 'MonkeyKing') + '.png\');background-size:contain;">').appendTo(".champ2_stats")
+            .css("margin","auto")
+            .css("display","table")
+        $("<h4 class='text-center'>Solo Kills vs "+champs[0]+"</h4>").appendTo(".champ2_stats")
+        $("<h4 class='text-center'>"+data[champs[1]]["head"]+"</h4>").appendTo(".champ2_stats")
+            .css("color","red")
+        /*
+        $("<h4 class='text-center'>Solo Kills % vs "+champs[0]+"</h4>").appendTo(".champ2_stats")
+        $("<h4 class='text-center'>"+Math.round(data[champs[1]]["head"]/(data[champs[1]]["head"]+data[champs[0]]["head"])*100)+"%</h4><br>").appendTo(".champ2_stats")
+            .css("color","red")
+        */
+        /*$("<h4>Kills = "+data[champs[1]]["kills"]+"</h4>").appendTo(".champ2_stats")
+        $("<h4>Deaths = "+data[champs[1]]["deaths"]+"</h4>").appendTo(".champ2_stats")
+        $("<h4>Wins = "+data[champs[1]]["wins"]+"</h4>").appendTo(".champ2_stats")
+        $("<h4>Total Games = "+data[champs[1]]["matches"]+"</h4>").appendTo(".champ2_stats")
+        $("<h4>Win % = "+Math.round(data[champs[1]]["wins"]/data[champs[1]]["matches"]*100)+"%</h4><br>").appendTo(".champ2_stats")
+        */
+        $('.grey').click(function (e) {
             $(this).fadeOut(400);
             $(this).empty();
         });
@@ -169,5 +220,3 @@ function preloadImages(array) {
         }
     }, 0);
 }
-
-

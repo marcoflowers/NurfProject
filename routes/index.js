@@ -23,9 +23,21 @@ module.exports = function(app, db) {
             if(result.length !== 0) {
                 result = result[0];
                 var output = {};
-                output[data.champ1] = result[id1];
-                output[data.champ2] = result[id2];
-                res.json(output);
+                var data1 = result[id1];
+                var data2 = result[id2];
+                db.collection("champ_stats").findOne({"_id":parseInt(id1)},function(err,result){
+                var champ1 = result
+                    db.collection("champ_stats").findOne({"_id":parseInt(id2)},function(err,result){
+                        var champ2 = result
+                        output[data.champ1] = champ1
+                        output[data.champ1]["head"] = data1
+                        output[data.champ2] = champ2
+                        output[data.champ2]["head"] = data2
+                        console.log(output)
+                        res.json(output)
+                    })
+                })
+                //res.json(output);
             } else {
                 res.json({err: "No data found"});
             }
