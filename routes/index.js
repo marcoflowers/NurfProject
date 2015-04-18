@@ -5,11 +5,7 @@ module.exports = function(app, db) {
 
     /* GET home page. */
     app.get('/', function(req, res, next) {
-        db.collection("shrooms").aggregate([{
-            $group:{_id:null, shroomspergame:{$avg:"$shrooms"}}
-        }], function(err, result) {
-            res.render('home', {shrooms: Math.round(result[0].shroomspergame)});
-        });
+        res.render('home', {});
     });
     /* GET matchup data. */
     app.post('/', function(req, res, next) {
