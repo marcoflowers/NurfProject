@@ -154,7 +154,9 @@ function showMatchup(data) {
             .css("display","table")
         $("<h4 class='text-center'>Solo Kills vs "+champs[1]+"</h4>").appendTo(".champ1_stats")
         $("<h4 class='text-center'>"+data[champs[0]]["head"]+"</h4>").appendTo(".champ1_stats")
-            .css("color","green")
+        .css("color", (function() {
+            return data[champs[0]]['head'] > data[champs[1]]['head'] ? '#00ff00' : '#FF0000';
+        }));
         /*
         $("<h4>Kills = "+data[champs[0]]["kills"]+"</h4>").appendTo(".champ1_stats")
         $("<h4>Deaths = "+data[champs[0]]["deaths"]+"</h4>").appendTo(".champ1_stats")
@@ -181,7 +183,9 @@ function showMatchup(data) {
             .css("display","table")
         $("<h4 class='text-center'>Solo Kills vs "+champs[0]+"</h4>").appendTo(".champ2_stats")
         $("<h4 class='text-center'>"+data[champs[1]]["head"]+"</h4>").appendTo(".champ2_stats")
-            .css("color","red")
+        .css("color", (function() {
+            return data[champs[0]]['head'] > data[champs[1]]['head'] ? '#FF0000' : '#00FF00';
+        }))
         /*
         $("<h4 class='text-center'>Solo Kills % vs "+champs[0]+"</h4>").appendTo(".champ2_stats")
         $("<h4 class='text-center'>"+Math.round(data[champs[1]]["head"]/(data[champs[1]]["head"]+data[champs[0]]["head"])*100)+"%</h4><br>").appendTo(".champ2_stats")
