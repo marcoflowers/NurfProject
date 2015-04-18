@@ -130,7 +130,8 @@ function reset() {
 
 function showMatchup(data) {
     if(data.err === "No data found") {
-        $('#error').text("Sorry, no data was found for this matchup")
+        $('#error').text("Sorry, no data was found for this matchup");
+        $('#submit')[0].disabled = false;
     } else {
         var champs = [];
         $('.splashIcon').each(function (index) {
