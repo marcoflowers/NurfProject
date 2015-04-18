@@ -1,12 +1,21 @@
-## NURF Time Application
+## URFwin
 
 This is an entry into [Riot Games' API Challenge](https://developer.riotgames.com/discussion/riot-games-api/show/bX8Z86bm)
 
-This website will give summoners a place to check how champions measure up in 1v1's (No assists).
-Using a sampling of the data provided through the Riot Games API for URF Mode, we'll give users
-predictions on who wins HISTORICALLY, not necessarily every time.
+URFwin provides summoners with 1v1 champion rankings for URF mode. Using a random
+sampling of URF matches provided by the Riot Games API, we give predictions of
+which champion will win based on history of kills without any assisting champions.
 
-We also plan to implement a teemo shrooms tracker for URF
+Data was periodically gathered from buckets of match Ids in the special API URF 
+endpoint. We then extracted the kills that had no assistingParticipants and
+stored it, rather than storing the whole games data. We also kept track of 
+teemo shrooms.
 
 
-The frontend and backend will be created with libraries and frameworks that are TBD.
+Libraries/Frameworks/Software Used:
+JQuery
+JQuery-UI
+Node.js
+Nginx
+MongoDB
+Python
