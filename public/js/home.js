@@ -22,6 +22,8 @@ $(document).ready(function () {
     $('.splashIcon').click(function (e) {
         $('.replace').removeClass('replace');
         $(this).addClass('replace');
+        $('.selected').removeClass('selected');
+        $('#' + $(this).attr('value')).addClass('selected');
     });
     $('.champIcon').click(function (e) {
         var name = $(this).attr('id');
@@ -33,12 +35,12 @@ $(document).ready(function () {
             return;
         }
         else {
-            $('#' + selected.splice(selected.indexOf($('.replace').attr('value')), 1)).removeClass('selected');
+            selected.splice(selected.indexOf($('.replace').attr('value')), 1);
             selected.push(name);
+            $('.selected').removeClass('selected');
             $(this).addClass('selected');
         }
         $('.splashIcon').each(function (index) {
-            console.log($(this).attr('value') + " : " + name);
             if ($(this).attr('value') == name) {
                 return;
             }
@@ -100,7 +102,8 @@ function filter(name) {
 }
 function reset() {
     $('.selected').removeClass('selected');
-    $('.splash').attr('src', "/img/empty_white.png");
+    $('.splashIcon').attr('src', "/img/empty_white.png");
+    $('.splashIcon').removeAttr('value');
     $('.replace').removeClass('replace');
     $('#splash1').addClass('replace');
 }
