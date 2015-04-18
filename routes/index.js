@@ -41,9 +41,11 @@ module.exports = function(app, db) {
     app.get('/leaderboard', function(req, res, next) {
         db.collection('champ_stats').find().sort({solo_perc:-1}).toArray(function(err, result) {
             winners = result;
+            for (i = 0; i < winners.length; i++) {
+                winners[i].champ = champs[winners[i]._id];
+            }
             res.render('leaderboard', {winners: winners});
             });
-        });
     });
 
     app.get('/about', function(req, res, next) {
