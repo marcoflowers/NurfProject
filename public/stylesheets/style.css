@@ -72,3 +72,13 @@
     display: none;
     text-align: center;
 }
+
+
+
+.leader {
+    border: 1px solid #EEEEEE;
+    height: 5vh;
+    vertical-align: middle;
+    width: 100%;
+    font-size: 15px;
+}
