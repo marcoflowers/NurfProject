@@ -56,6 +56,11 @@ def update_solo(champ_id):
     print solo_deaths
     print wins
     print losses
+    solo_perc = round(float(wins)/(wins+losses),5)
+    print float(wins)/(wins+losses)
+    print solo_perc
     print ""
+    champStats.find_and_modify(query = {"_id":champ_id},update={'$set':{"solo_kills":solo_kills,"solo_deaths":solo_deaths,"solo_wins":wins,"solo_losses":losses,"solo_perc":solo_perc}})
+    print "updated"
 for id in ids:
     update_solo(int(id))

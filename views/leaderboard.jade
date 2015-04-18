@@ -1,0 +1,25 @@
+extends ./base.jade
+block title
+  title URFWin
+block css
+  link(rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.css")
+
+block body
+  div.container
+    div.row
+      h1(style="text-align:center") URF SoloKill LeaderBoard
+    div.row.text-center
+        div.col-md-6
+            h1 Winners
+            ul
+                each val in winners
+                    - perc = Math.round(val.solo_perc*100)
+                    li= val.champ + " at "+perc+"%"
+        div.col-md-6
+            h1 Losers
+            ul
+                each val in losers
+                    - perc = Math.round(val.solo_perc*100)
+                    li= val.champ + " at "+perc+"%"
+block scripts
+  script(src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js")
