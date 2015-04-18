@@ -15,10 +15,10 @@ stored it, rather than storing the whole games data. We also kept track of
 teemo shrooms.
 
 
-Libraries/Frameworks/Software Used:
-JQuery
-JQuery-UI
-Node.js
-Nginx
-MongoDB
-Python
+Libraries/Frameworks/Software Used: <br>
+JQuery <br>
+JQuery-UI <br>
+Node.js <br>
+Nginx <br>
+MongoDB <br>
+Python <br>
