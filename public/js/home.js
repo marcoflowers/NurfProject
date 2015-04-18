@@ -26,6 +26,7 @@ $(document).ready(function () {
         $('#' + $(this).attr('value')).addClass('selected');
     });
     $('.champIcon').click(function (e) {
+        $('#error').text('');
         var name = $(this).attr('id');
         var selected = [];
         $(".splashIcon").each(function (index) {
@@ -110,6 +111,7 @@ function reset() {
 function showMatchup(data) {
     if (data.err === "No data found") {
         $('#error').text("Sorry, no data was found for this matchup");
+        $('#submit')[0].disabled = false;
     }
     else {
         var champs = [];
