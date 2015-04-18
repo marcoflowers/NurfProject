@@ -33,8 +33,9 @@ $(document).ready(function () {
             return;
         }
         else {
-            selected.splice(selected.indexOf($('.replace').attr('value')), 1);
+            $('#' + selected.splice(selected.indexOf($('.replace').attr('value')), 1)).removeClass('selected');
             selected.push(name);
+            $(this).addClass('selected');
         }
         $('.splashIcon').each(function (index) {
             console.log($(this).attr('value') + " : " + name);
@@ -64,13 +65,13 @@ $(document).ready(function () {
         else {
             $('#error').text('Please pick both champions');
         }
+        this.disabled = true;
     });
     $('.champInput').keypress(function (e) {
         var element = $(e.target);
         if ((e.keyCode || e.which) == 13) {
             $('.champIcon').filter(':visible').first().trigger('click');
         }
-        //filter(element.val());
     });
     $('.champInput').autocomplete({
         autofocus: true,
@@ -134,7 +135,7 @@ function showMatchup(data) {
         $("<h4 class='text-center'>Solo Kills vs " + champs[1] + "</h4>").appendTo(".champ1_stats");
         $("<h4 class='text-center'>" + data[champs[0]]["head"] + "</h4>").appendTo(".champ1_stats")
             .css("color", (function () {
-            return data[champs[0]]['head'] > data[champs[1]]['head'] ? '#00ff00' : '#FF0000';
+            return data[champs[0]]['head'] > data[champs[1]]['head'] ? '#1fff1f' : '#FF1f1f';
         }));
         /*
         $("<h4>Kills = "+data[champs[0]]["kills"]+"</h4>").appendTo(".champ1_stats")
@@ -176,6 +177,7 @@ function showMatchup(data) {
         $('.grey').click(function (e) {
             $(this).fadeOut(400);
             $(this).empty();
+            $("#submit")[0].disabled = false;
         });
     }
 }
