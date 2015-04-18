@@ -1,3 +1,8 @@
+body {
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+}
 .champIcon {
     width: 50px;
     height: 50px;
@@ -32,10 +37,9 @@
 
 }
 .splashIcon {
+    height: 35vh;
     border: #333 dashed;
     display: inline-block;
-    width: 154px;
-    height: 280px;
     padding: 0;
 }
 
@@ -50,7 +54,7 @@
 }
 
 #vs {
-    height: 280px;
+    height: 25vh;
     margin: 0;
     padding: 0;
     display: inline;
@@ -71,4 +75,12 @@
     overflow: hidden;
     display: none;
     text-align: center;
+}
+
+.leader {
+    border: 1px solid #EEEEEE;
+    height: 5vh;
+    vertical-align: middle;
+    width: 100%;
+    font-size: 15px;
 }

@@ -1,0 +1,21 @@
+extends ./base.jade
+
+block title
+  title About URFWin
+
+block body
+  div.container(style="margin-left:1vw; margin-right:1vw;")
+    div.row
+      h1(style="text-align:center") URF
+        small win
+    div.row
+      p(style="text-align:center") <b><em>URFwin isn't endorsed by Riot Games and doesn't reflect the views or opinions of Riot Games or anyone officially involved in producing or managing League of Legends. League of Legends and Riot Games are trademarks or registered trademarks of Riot Games, Inc. League of Legends © Riot Games, Inc.</em><b>
+    div.row(style="border-top: 1px solid grey; padding-top: 40px;")
+      h1(style="float:left;display:inline-block")= matches
+        small &nbspMatches Gathered
+      h1(style="float:right;display:inline-block")= shrooms
+        small &nbspShrooms Placed
+    div.row(style="border-top: 1px solid grey; padding-top: 40px;")
+      p Data for this webapp was gathered using the Riot Games API. Winners were determined by checking who won the fights that had no assisting participants, in other words, the only person to do damage to the slain was the killer.
+    div.row(style="border-top: 1px solid grey; padding-top: 40px;")
+      h4 Created by: <br> Marco Flowers & Adrian Brandemuehl
