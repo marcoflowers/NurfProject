@@ -39,6 +39,7 @@ $(document).ready(function () {
 
 
     $('.champIcon').click(function(e:Event) {
+        $('#error').text('');
         var name:string = $(this).attr('id');
         var selected:string[] = [];
         $(".splashIcon").each(function(index:number) {

@@ -26,6 +26,7 @@ $(document).ready(function () {
         $('#' + $(this).attr('value')).addClass('selected');
     });
     $('.champIcon').click(function (e) {
+        $('#error').text('');
         var name = $(this).attr('id');
         var selected = [];
         $(".splashIcon").each(function (index) {
