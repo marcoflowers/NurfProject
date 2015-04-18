@@ -14,11 +14,11 @@ MIN_FLAGS =
 $(JS):$(SRC)
 	$(TC) $< --out $@
 
-$(DIST): $(SRC)
-	$(BUNDLE) $(BUNDLEFLAGS) --out $@ $^
-
-$(DIST_MIN): $(DIST)
-	$(MIN) $(MINFLAGS) $< --out $@
+# $(DIST): $(SRC)
+# 	$(BUNDLE) $(BUNDLEFLAGS) --out $@ $^
+# 
+# $(DIST_MIN): $(DIST)
+# 	$(MIN) $(MINFLAGS) $< --out $@
 
 clean:
 	rm ./public/js/*.js

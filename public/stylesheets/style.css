@@ -1,6 +1,19 @@
+body {
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+}
 .champIcon {
     width: 50px;
     height: 50px;
+    transition: all .25s ease-in-out;
+    margin: auto;
+    display: inline-block;
+    cursor: pointer;
+}
+.champIconGrey {
+    width: 100px;
+    height: 100px;
     transition: all .25s ease-in-out;
     margin: auto;
     display: inline-block;
@@ -15,7 +28,7 @@
 }
 
 .selected {
-    border: 5px solid red;
+    border: 3px solid red;
 }
 
 #show-selection {
@@ -23,11 +36,15 @@
     margin:auto!important;
 
 }
-#splash1, #splash2 {
+.splashIcon {
+    height: 35vh;
     border: #333 dashed;
-    width: 154px;
-    height: 280px;
     display: inline-block;
+    padding: 0;
+}
+
+.replace {
+    border: solid red;
 }
 
 .splash {
@@ -37,7 +54,7 @@
 }
 
 #vs {
-    height: 280px;
+    height: 25vh;
     margin: 0;
     padding: 0;
     display: inline;
@@ -47,4 +64,23 @@
     display: block;
     padding: 15px;
     padding-top: 25px;
+}
+
+
+.grey {
+    margin:0;
+    background: rgba(51, 51, 51, .85);
+    position: fixed;
+    z-index: 100;
+    overflow: hidden;
+    display: none;
+    text-align: center;
+}
+
+.leader {
+    border: 1px solid #EEEEEE;
+    height: 5vh;
+    vertical-align: middle;
+    width: 100%;
+    font-size: 15px;
 }

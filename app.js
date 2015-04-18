@@ -4,7 +4,22 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
-var db = require('mongoskin').db('localhost:27017/nurf');
+var mongo = require('mongoskin');
+var SECRETS = require('./secrets');
+
+if(SECRETS["config"] == "dev")
+{
+    client = MongoClient(SECRETS["dev"]["server"])
+    API_KEY = SECRETS["dev"]["API_KEY"]
+}
+else
+{
+    server = SECRETS["live"]["server"]
+    username = SECRETS["live"]["username"]
+    password = SECRETS["live"]["password"]
+    API_KEY = SECRETS["live"]["API_KEY"]
+}
+var db = mongo.db(server);
 
 var routes = require('./routes/index');
 
@@ -15,7 +30,7 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 
 // uncomment after placing your favicon in /public
-//app.use(favicon(__dirname + '/public/favicon.ico'));
+// app.use(favicon(__dirname + '/public/favicon.ico'));
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -23,7 +38,8 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 //routes
-require('./routes/index')(app);
+require('./routes/index')(app, db);
+
 
 
 // catch 404 and forward to error handler

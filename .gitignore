@@ -4,3 +4,7 @@ node_modules/
 env/
 .*.sw*
 typings/
+Vagrantfile
+.vagrant/
+secrets.json
+npm-debug.log
