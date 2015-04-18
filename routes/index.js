@@ -43,17 +43,9 @@ module.exports = function(app, db) {
         });
     });
     app.get('/leaderboard', function(req, res, next) {
-        db.collection('champ_stats').find().sort({solo_perc:-1}).limit(10).toArray(function(err, result) {
+        db.collection('champ_stats').find().sort({solo_perc:-1}).toArray(function(err, result) {
             winners = result;
-            db.collection('champ_stats').find().sort({solo_perc:1}).limit(10).toArray(function(err, result) {
-                losers = result;
-                for (i = 0; i < winners.length; i++) {
-                    winners[i].champ = champs[winners[i]._id];
-                }
-                for (i = 0; i < losers.length; i++) {
-                    losers[i].champ = champs[losers[i]._id];
-                }
-                res.render('leaderboard', {winners: winners,losers:losers});
+            res.render('leaderboard', {winners: winners});
             });
         });
     });
